@@ -1,9 +1,9 @@
 # Germinativo_GATK
 Pipeline em Python e Bash para análise de dados germinativos utilizando a ferramenta GATK. 
 
-# Neste pipeline utilizaremos o google colab como nosso ambiente de programação.
+## Neste pipeline utilizaremos o google colab como nosso ambiente de programação.
 
-###Parte 1 - Revisão dos comandos do Linux
+# Parte 1 - Revisão dos comandos do Linux
 
 Atenção: Para executar comandos Linux no Jupyter Notebook, é necessário utilizar uma exclamação (!) no início da linha ou colocar a linha %%bash no começo da célula.
 
