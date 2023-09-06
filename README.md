@@ -401,4 +401,246 @@ perl annovar/annotate_variation.pl -buildver hg38 \
 
 
 
-## 4.4 - Annotar as variantes do VCF com o ANNOVAR
+## 4.4 - Anotar as variantes do VCF com o ANNOVAR
+```bash
+%%bash
+perl annovar/table_annovar.pl -vcfinput dados/gatk/AMOSTRA01_sorted.vcf \
+annovar/humandb/ --dot2underline -buildver hg38 \
+-out dados/annovar/AMOSTRA01 -remove \
+-protocol refGene,avsnp147,exac03,clinvar_20210123,dbnsfp30a \
+-operation g,f,f,f,f -nastring "." 
+```
+Este é um comando que usa o script table_annovar.pl do ANNOVAR (Annotate Variation) para realizar a anotação de variantes a partir de um arquivo VCF (Variant Call Format).
+
+perl annovar/table_annovar.pl: Isso chama o script table_annovar.pl do ANNOVAR e inicia o processo de anotação de variantes.
+
+-vcfinput dados/gatk/AMOSTRA01_sorted.vcf: Especifica o arquivo de entrada no formato VCF que contém as variantes que você deseja anotar. Neste caso, o arquivo de entrada é "AMOSTRA01_sorted.vcf" localizado no diretório "dados/gatk/".
+
+annovar/humandb/: Especifica o diretório que contém os bancos de dados e recursos necessários para a anotação. O diretório "annovar/humandb/" contém os recursos de anotação para o genoma humano.
+
+--dot2underline: Esta opção solicita que qualquer ponto (.) encontrado nos nomes das variantes seja substituído por um sublinhado (_) nos resultados da anotação.
+
+-buildver hg38: Especifica a versão do genoma de referência que será usada para a anotação. Neste caso, "hg38" se refere à versão do genoma humano GRCh38.
+
+-out dados/annovar/AMOSTRA01: Define o diretório e o prefixo do nome para os arquivos de saída gerados pela anotação. Os resultados da anotação serão armazenados no diretório "dados/annovar/" com o prefixo "AMOSTRA01".
+
+-remove: Esta opção indica que as variantes que não puderem ser anotadas devem ser removidas dos resultados.
+
+-protocol refGene,avsnp147,exac03,clinvar_20210123,dbnsfp30a: Define os protocolos de anotação que serão utilizados. Neste caso, as variantes serão anotadas usando os seguintes protocolos:
+        refGene: Anotação de genes de referência.
+        avsnp147: Anotação de variantes comuns da base de dados dbSNP.
+        exac03: Anotação de frequência de alelos da ExAC (Exome Aggregation Consortium).
+        clinvar_20210123: Anotação de variantes do banco de dados ClinVar.
+        dbnsfp30a: Anotação de efeitos preditos das variantes usando o banco de dados dbNSFP.
+
+ -operation g,f,f,f,f: Define as operações para cada protocolo de anotação. Neste caso:
+        refGene: Será uma anotação genômica (gene-based, "g").
+        avsnp147, exac03, clinvar_20210123, dbnsfp30a: Serão anotações de filtro ("f"), o que significa que os resultados serão filtrados com base em critérios específicos.
+
+-nastring ".": Define o caractere que será usado para representar valores ausentes ou não aplicáveis nos resultados da anotação. Neste caso, um ponto (.) será usado.
+
+Este comando executará a anotação das variantes do arquivo VCF especificado usando os recursos e bancos de dados fornecidos pelo ANNOVAR e gerará arquivos de saída com informações adicionais sobre essas variantes. A anotação é útil para entender o significado funcional e clínico das variantes identificadas durante a análise genômica.
+
+
+
+# Parte 5 - Analisar as variantes encontradas
+
+## 5.1 - Importar as bibliotecas do python necessárias para as análises
+
+```python
+import pandas as pd
+from matplotlib import pyplot as plt
+import seaborn as sns
+import numpy as np
+```
+## 5.2 - Converter o VCF para tabela utilizando o GATK
+
+```bash
+%%time
+%%bash
+# bash = linux
+# linha de anotacao
+# Executar o VariantsToTable
+gatk-4.1.8.1/gatk VariantsToTable \
+  -V dados/annovar/AMOSTRA01.hg38_multianno.vcf \
+  -F CHROM -F POS -F REF -F ALT -F QUAL \
+  -F AC -F AF -F AN -F DP -F ExcessHet -F FS -F MLEAC \
+  -F MLEAF -F MQ -F QD -F SOR \
+  -F ANNOVAR_DATE -F Func_refGene -F Gene_refGene -F GeneDetail_refGene -F ExonicFunc_refGene -F AAChange_refGene \
+  -F avsnp147 \
+  -F ExAC_ALL -F ExAC_AFR -F ExAC_AMR -F ExAC_EAS -F ExAC_FIN -F ExAC_NFE -F ExAC_OTH -F ExAC_SAS \
+  -F CLNALLELEID -F CLNDN -F CLNDISDB -F CLNREVSTAT -F CLNSIG \
+  -F SIFT_score -F SIFT_pred \
+  -F Polyphen2_HDIV_score -F Polyphen2_HDIV_pred -F Polyphen2_HVAR_score -F Polyphen2_HVAR_pred \
+  -F LRT_score -F LRT_pred \
+  -F MutationTaster_score -F MutationTaster_pred -F MutationAssessor_score -F MutationAssessor_pred \
+  -F FATHMM_score -F FATHMM_pred -F PROVEAN_score -F PROVEAN_pred -F VEST3_score \
+  -F CADD_raw -F CADD_phred -F DANN_score \
+  -F fathmm-MKL_coding_score -F fathmm-MKL_coding_pred \
+  -F MetaSVM_score -F MetaSVM_pred -F MetaLR_score -F MetaLR_pred \
+  -F integrated_fitCons_score -F integrated_confidence_value \
+  -F GERP++_RS -F phyloP7way_vertebrate -F phyloP20way_mammalian \
+  -F phastCons7way_vertebrate -F phastCons20way_mammalian \
+  -F SiPhy_29way_logOdds \
+  -GF GT -GF AD -GF DP -GF GQ -GF PL \
+  -O dados/annovar/AMOSTRA01.hg38_annovar.csv 1>logs/log_VariantsToTable.txt 2>erro_VariantsToTable.txt
+```
+gatk-4.1.8.1/gatk VariantsToTable ...: Esta é a linha principal do script que executa o GATK VariantsToTable. Segue os detalhes da operação:
+
+gatk-4.1.8.1/gatk VariantsToTable: Isso chama o programa GATK VariantsToTable.
+
+-V dados/annovar/AMOSTRA01.hg38_multianno.vcf: Especifica o arquivo de entrada VCF que contém as variantes que você deseja converter em uma tabela CSV. O arquivo "AMOSTRA01.hg38_multianno.vcf" é usado como entrada.
+
+-F ...: Esta seção especifica os campos do arquivo VCF que você deseja incluir na tabela CSV resultante. Cada campo é especificado com a opção -F seguida pelo nome do campo.
+
+-GF ...: Essa seção especifica os campos genotípicos a serem incluídos na tabela CSV. Assim como os campos regulares, cada campo genotípico é especificado com a opção -GF seguida pelo nome do campo.
+
+-O dados/annovar/AMOSTRA01.hg38_annovar.csv: Define o nome e a localização do arquivo CSV de saída onde os resultados serão armazenados. O arquivo será salvo como "AMOSTRA01.hg38_annovar.csv" no diretório "dados/annovar/".
+
+1>logs/log_VariantsToTable.txt 2>erro_VariantsToTable.txt: Redireciona a saída padrão (stdout) para o arquivo "log_VariantsToTable.txt" e a saída de erro (stderr) para o arquivo "erro_VariantsToTable.txt".
+
+
+## 5.3 - Importar o arquivo do annovar. Delimitado por TAB para o dataframe do python
+
+```python
+df = pd.read_csv("dados/annovar/AMOSTRA01.hg19_annovar.csv", sep="\t")
+df.head()
+```
+
+Analisar a categoria funcional das variantes
+
+```python
+df["Func_refGene"].value_counts()
+```
+
+Analisar os genes que apresentam as variantes
+```python
+df["Gene_refGene"].value_counts().head()
+```
+
+Analisar a qualidade das variantes encontradas
+```python
+df["QUAL"].describe()
+```
+
+Analisar a cobertura das variantes encontradas
+```python
+df["DP"].describe()
+```
+
+Analisar a cobertura junto com a qualidade da chamada de variante e de identificação do genótipo
+```python
+df[["DP", "QUAL", "NOME.GQ"]].describe()
+```
+
+Combinar duas análises para análises do tipos das variantes
+
+```python
+df[["Func_refGene", "ExonicFunc_refGene"]].groupby("ExonicFunc_refGene").count()
+```
+
+
+# Parte 6 - Filtrar as variantes de interesse clínico
+
+## 6.1 - Filtrar apenas as variantes exonicas
+
+```python
+df_exonic = df[df["Func_refGene"] == "exonic"]
+df_exonic.head()
+df_exonic.shape
+```
+
+## 6.2 - Remover das variantes exonicas as variantes sinonimas
+
+```python
+df_exonic_no_sinonima = df_exonic[df_exonic["ExonicFunc_refGene"] != "synonymous_SNV"]
+df_exonic_no_sinonima["QUAL"].describe()
+df_exonic_no_sinonima.head()
+```
+
+6.3 - Exportar as variantes para o Excel
+
+```python
+df_exonic_no_sinonima[["CHROM","POS","REF","ALT","Gene_refGene","ExonicFunc_refGene","AAChange_refGene"]].to_excel("listaVariante.xlsx")
+```
+
+
+# Parte 7 - Análises gráficas
+
+Densidade de variantes ao longo do cromossomo
+
+```python
+sns.displot(df["POS"], aspect=2, bins=25)
+plt.ylabel("Número de variantes")
+plt.xlabel("Posição (pb)")
+plt.title("Densidade de variantes ao longo do cromossomo 12")
+```
+
+Distribuição das métricas de qualidade
+
+```python
+plt.figure(figsize=(10,5))
+plt.scatter(df["POS"], df["QUAL"], alpha=0.5)
+plt.xlabel("Posição (pb)")
+plt.ylabel("Qualidade (Phred scale)")
+plt.title("Variação da qualidade das variantes ao longo do genoma")
+```
+```python
+plt.figure(figsize=(10,5))
+plt.scatter(df["POS"], df["DP"], alpha=0.5)
+plt.xlabel("Posição (pb)")
+plt.ylabel("Cobertura")
+plt.title("Variação da cobertura das variantes ao longo do genoma")
+```
+O primeiro plot mostra que as variantes de alta confiabilidade estão agrupadas em pequenas regiões do cromossomo. Já o segundo plot mostra o motivo desse agrupamento: essas são as regiões com boa cobertura (>20x). Esse comportamento é o esperado para dados de painel.
+
+```python
+plt.figure(figsize=(10,5))
+plt.scatter(df["POS"], df["MQ"], alpha=0.1)
+plt.xlabel("Posição (pb)")
+plt.ylabel("Qualidade de mapeamento")
+plt.title("Variação da qualidade de mapeamento ao longo do genoma")
+```
+
+A qualidade de mapeamento (ou seja, a confiabilidade com que os reads podem ser posicionados no genoma de referência) não mostra o mesmo padrão que a cobertura.
+
+
+Contagem de variantes em homo/heterozigose
+
+```python
+# criar figura do tamanho desejado
+plt.figure(figsize=(5,5))
+# selecionar a coluna "AF" e trocar 1 por homozigoto e 0.5 por heterozigoto
+zigose = df["AF"].map({1:"Homozigose", 0.5:"Heterozigose"})
+# contar variantes het/hom e gerar gráfico de pizza
+zigose.value_counts().plot(kind="pie", autopct="%.1f%%")
+# remover label no eixo Y (você pode remover essa linha e ver o que acontece)
+plt.ylabel("")
+# adicionar título
+plt.title("Zigose das variantes encontradas")
+```
+
+Esse gráfico mostra uma forte predominância de variantes em homozigose. Isso faz sentido, porque a maior parte dos sítios não tem cobertura suficiente para chamar variantes em heterozigose. Se filtrarmos apenas variantes de alta qualidade, a predominância de homozigose fica menos exagerada:
+
+```python
+plt.figure(figsize=(5,5))
+zigose_high_quality = zigose[df["QUAL"]>500]
+zigose_high_quality.value_counts().plot(kind="pie", autopct="%.1f%%")
+plt.ylabel("")
+plt.title("Zigose das variantes encontradas\napós filtro de qualidade")
+```
+
+Distribuição das métricas de qualidade e cobertura
+
+```python
+sns.displot(df["QUAL"], bins=30)
+sns.displot(df["DP"], bins=30)
+bins = [0,1,2,20,50,80,120]
+sns.barplot(x=pd.cut(df["DP"], bins), y=df["QUAL"], ci=None, color="#00bbbb")
+plt.xlabel("Intervalos de cobertura")
+plt.ylabel("Qualidade média das variantes")
+plt.title("Relação entre qualidade e cobertura de sequenciamento")
+df[["DP","QUAL"]].corr()
+```
+
+
