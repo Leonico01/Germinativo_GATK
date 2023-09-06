@@ -423,16 +423,18 @@ annovar/humandb/|Especifica o diretório que contém os bancos de dados e recurs
 -buildver hg38|Especifica a versão do genoma de referência que será usada para a anotação. Neste caso, "hg38" se refere à versão do genoma humano GRCh38.
 -out dados/annovar/AMOSTRA01|Define o diretório e o prefixo do nome para os arquivos de saída gerados pela anotação. Os resultados da anotação serão armazenados no diretório "dados/annovar/" com o prefixo "AMOSTRA01".
 -remove|Esta opção indica que as variantes que não puderem ser anotadas devem ser removidas dos resultados.
--protocol refGene,avsnp147,exac03,clinvar_20210123,dbnsfp30a|Define os protocolos de anotação que serão utilizados. Neste caso, as variantes serão anotadas usando os seguintes protocolos:
-        refGene: Anotação de genes de referência.
-        avsnp147: Anotação de variantes comuns da base de dados dbSNP.
-        exac03: Anotação de frequência de alelos da ExAC (Exome Aggregation Consortium).
-        clinvar_20210123: Anotação de variantes do banco de dados ClinVar.
-        dbnsfp30a: Anotação de efeitos preditos das variantes usando o banco de dados dbNSFP.
--operation g,f,f,f,f|Define as operações para cada protocolo de anotação. Neste caso:
-        refGene: Será uma anotação genômica (gene-based, "g").
-        avsnp147, exac03, clinvar_20210123, dbnsfp30a: Serão anotações de filtro ("f"), o que significa que os resultados serão filtrados com base em critérios específicos.
+-protocol refGene,avsnp147,exac03,clinvar_20210123,dbnsfp30a|Define os protocolos de anotação que serão utilizados*.
+-operation g,f,f,f,f|Define as operações para cada protocolo de anotação**.
 -nastring "."|Define o caractere que será usado para representar valores ausentes ou não aplicáveis nos resultados da anotação. Neste caso, um ponto (.) será usado.
+
+*refGene: Anotação de genes de referência.
+ avsnp147: Anotação de variantes comuns da base de dados dbSNP.
+ exac03: Anotação de frequência de alelos da ExAC (Exome Aggregation Consortium).
+ clinvar_20210123: Anotação de variantes do banco de dados ClinVar.
+ dbnsfp30a: Anotação de efeitos preditos das variantes usando o banco de dados dbNSFP.
+
+**refGene: Será uma anotação genômica (gene-based, "g").
+  avsnp147, exac03, clinvar_20210123, dbnsfp30a: Serão anotações de filtro ("f"), o que significa que os resultados serão filtrados com base em critérios específicos.
 
 Este comando executará a anotação das variantes do arquivo VCF especificado usando os recursos e bancos de dados fornecidos pelo ANNOVAR e gerará arquivos de saída com informações adicionais sobre essas variantes. A anotação é útil para entender o significado funcional e clínico das variantes identificadas durante a análise genômica.
 
