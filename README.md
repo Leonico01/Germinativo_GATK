@@ -437,8 +437,8 @@ Operação|Descrição
 -dbnsfp30a|Anotação de efeitos preditos das variantes usando o banco de dados dbNSFP.
 
 Operation:
-- refGene_ Será uma anotação genômica (gene-based, "g").
-- avsnp147, exac03, clinvar_20210123, dbnsfp30a|Serão anotações de filtro ("f"), o que significa que os resultados serão filtrados com base em critérios específicos.
+- refGene_: Será uma anotação genômica (gene-based, "g").
+- avsnp147, exac03, clinvar_20210123, dbnsfp30a: Serão anotações de filtro ("f"), o que significa que os resultados serão filtrados com base em critérios específicos.
 
 Este comando executará a anotação das variantes do arquivo VCF especificado usando os recursos e bancos de dados fornecidos pelo ANNOVAR e gerará arquivos de saída com informações adicionais sobre essas variantes. A anotação é útil para entender o significado funcional e clínico das variantes identificadas durante a análise genômica.
 
