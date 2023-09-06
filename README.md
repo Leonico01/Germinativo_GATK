@@ -228,7 +228,6 @@ Operações utilizadas:
 Operação|Descrição
 ---|---
 -M|Esta opção é usada para marcar fragmentos de leitura como secundários para permitir um melhor processamento posterior, como o ordenamento com ferramentas como o Picard Tools.
-
 -R|"@RG\tID:CAP\tSM:$NOME\tLB:$Biblioteca\tPL:$Plataforma": Esta opção define um cabeçalho RG (Read Group) que será incluído no arquivo de saída SAM. Ele fornece informações sobre a amostra, biblioteca e plataforma usadas. As variáveis $NOME, $Biblioteca e $Plataforma são substituídas pelos valores definidos anteriormente.
 
 /content/drive/Shareddrives/T4-2022/reference/hg38/hg38.fa: Este é o caminho para o arquivo de referência genômica usado para o alinhamento. O arquivo hg38.fa contém a sequência de referência do genoma humano.
@@ -399,5 +398,7 @@ perl annovar/annotate_variation.pl -buildver hg38 \
 perl annovar/annotate_variation.pl -buildver hg38 \
 -downdb -webfrom annovar clinvar_20210123 annovar/humandb/
 ```
+
+
 
 ## 4.4 - Annotar as variantes do VCF com o ANNOVAR
