@@ -324,13 +324,13 @@ time gatk-4.1.8.1/gatk HaplotypeCaller ...: Este é o comando principal. Ele cha
 
 gatk-4.1.8.1/gatk HaplotypeCaller: Isso especifica o caminho para a ferramenta GATK HaplotypeCaller que será executada.
 
--R /content/drive/Shareddrives/T4-2022/reference/hg38/hg38.fa: Esta opção especifica o arquivo de referência genômica em que o chamado de variantes será baseado. O arquivo "hg38.fa" contém a sequência de referência do genoma humano.
-
--I dados/bwa/AMOSTRA01_sorted.bam: Esta opção especifica o arquivo BAM de entrada contendo as leituras de sequência genômica alinhadas.
-
--O dados/gatk/AMOSTRA01_sorted.vcf: Esta opção especifica o nome e localização do arquivo de saída no formato VCF (Variant Call Format), que conterá as variantes chamadas.
-
--bamout dados/bwa/AMOSTRA01_sorted_bamout.bam: Esta opção especifica o nome e localização do arquivo de saída BAM que conterá as leituras reformatadas para incluir informações sobre o chamado de variantes.
+Operações utilizadas:
+Operação|Descrição
+---|---
+-R /content/drive/Shareddrives/T4-2022/reference/hg38/hg38.fa|Esta opção especifica o arquivo de referência genômica em que o chamado de variantes será baseado. O arquivo "hg38.fa" contém a sequência de referência do genoma humano.
+-I dados/bwa/AMOSTRA01_sorted.bam|Esta opção especifica o arquivo BAM de entrada contendo as leituras de sequência genômica alinhadas.
+-O dados/gatk/AMOSTRA01_sorted.vcf|Esta opção especifica o nome e localização do arquivo de saída no formato VCF (Variant Call Format), que conterá as variantes chamadas.
+-bamout dados/bwa/AMOSTRA01_sorted_bamout.bam|Esta opção especifica o nome e localização do arquivo de saída BAM que conterá as leituras reformatadas para incluir informações sobre o chamado de variantes.
 
 
 Usamos o comando a seguir para verificar nosso novo arquivo:
@@ -414,30 +414,25 @@ Este é um comando que usa o script table_annovar.pl do ANNOVAR (Annotate Variat
 
 perl annovar/table_annovar.pl: Isso chama o script table_annovar.pl do ANNOVAR e inicia o processo de anotação de variantes.
 
--vcfinput dados/gatk/AMOSTRA01_sorted.vcf: Especifica o arquivo de entrada no formato VCF que contém as variantes que você deseja anotar. Neste caso, o arquivo de entrada é "AMOSTRA01_sorted.vcf" localizado no diretório "dados/gatk/".
-
-annovar/humandb/: Especifica o diretório que contém os bancos de dados e recursos necessários para a anotação. O diretório "annovar/humandb/" contém os recursos de anotação para o genoma humano.
-
---dot2underline: Esta opção solicita que qualquer ponto (.) encontrado nos nomes das variantes seja substituído por um sublinhado (_) nos resultados da anotação.
-
--buildver hg38: Especifica a versão do genoma de referência que será usada para a anotação. Neste caso, "hg38" se refere à versão do genoma humano GRCh38.
-
--out dados/annovar/AMOSTRA01: Define o diretório e o prefixo do nome para os arquivos de saída gerados pela anotação. Os resultados da anotação serão armazenados no diretório "dados/annovar/" com o prefixo "AMOSTRA01".
-
--remove: Esta opção indica que as variantes que não puderem ser anotadas devem ser removidas dos resultados.
-
--protocol refGene,avsnp147,exac03,clinvar_20210123,dbnsfp30a: Define os protocolos de anotação que serão utilizados. Neste caso, as variantes serão anotadas usando os seguintes protocolos:
+Operações utilizadas:
+Operação|Descrição
+---|---
+-vcfinput dados/gatk/AMOSTRA01_sorted.vcf|Especifica o arquivo de entrada no formato VCF que contém as variantes que você deseja anotar. Neste caso, o arquivo de entrada é "AMOSTRA01_sorted.vcf" localizado no diretório "dados/gatk/".
+annovar/humandb/|Especifica o diretório que contém os bancos de dados e recursos necessários para a anotação. O diretório "annovar/humandb/" contém os recursos de anotação para o genoma humano.
+--dot2underline|Esta opção solicita que qualquer ponto (.) encontrado nos nomes das variantes seja substituído por um sublinhado (_) nos resultados da anotação.
+-buildver hg38|Especifica a versão do genoma de referência que será usada para a anotação. Neste caso, "hg38" se refere à versão do genoma humano GRCh38.
+-out dados/annovar/AMOSTRA01|Define o diretório e o prefixo do nome para os arquivos de saída gerados pela anotação. Os resultados da anotação serão armazenados no diretório "dados/annovar/" com o prefixo "AMOSTRA01".
+-remove|Esta opção indica que as variantes que não puderem ser anotadas devem ser removidas dos resultados.
+-protocol refGene,avsnp147,exac03,clinvar_20210123,dbnsfp30a|Define os protocolos de anotação que serão utilizados. Neste caso, as variantes serão anotadas usando os seguintes protocolos:
         refGene: Anotação de genes de referência.
         avsnp147: Anotação de variantes comuns da base de dados dbSNP.
         exac03: Anotação de frequência de alelos da ExAC (Exome Aggregation Consortium).
         clinvar_20210123: Anotação de variantes do banco de dados ClinVar.
         dbnsfp30a: Anotação de efeitos preditos das variantes usando o banco de dados dbNSFP.
-
- -operation g,f,f,f,f: Define as operações para cada protocolo de anotação. Neste caso:
+-operation g,f,f,f,f|Define as operações para cada protocolo de anotação. Neste caso:
         refGene: Será uma anotação genômica (gene-based, "g").
         avsnp147, exac03, clinvar_20210123, dbnsfp30a: Serão anotações de filtro ("f"), o que significa que os resultados serão filtrados com base em critérios específicos.
-
--nastring ".": Define o caractere que será usado para representar valores ausentes ou não aplicáveis nos resultados da anotação. Neste caso, um ponto (.) será usado.
+-nastring "."|Define o caractere que será usado para representar valores ausentes ou não aplicáveis nos resultados da anotação. Neste caso, um ponto (.) será usado.
 
 Este comando executará a anotação das variantes do arquivo VCF especificado usando os recursos e bancos de dados fornecidos pelo ANNOVAR e gerará arquivos de saída com informações adicionais sobre essas variantes. A anotação é útil para entender o significado funcional e clínico das variantes identificadas durante a análise genômica.
 
@@ -489,15 +484,14 @@ gatk-4.1.8.1/gatk VariantsToTable ...: Esta é a linha principal do script que e
 
 gatk-4.1.8.1/gatk VariantsToTable: Isso chama o programa GATK VariantsToTable.
 
--V dados/annovar/AMOSTRA01.hg38_multianno.vcf: Especifica o arquivo de entrada VCF que contém as variantes que você deseja converter em uma tabela CSV. O arquivo "AMOSTRA01.hg38_multianno.vcf" é usado como entrada.
-
--F ...: Esta seção especifica os campos do arquivo VCF que você deseja incluir na tabela CSV resultante. Cada campo é especificado com a opção -F seguida pelo nome do campo.
-
--GF ...: Essa seção especifica os campos genotípicos a serem incluídos na tabela CSV. Assim como os campos regulares, cada campo genotípico é especificado com a opção -GF seguida pelo nome do campo.
-
--O dados/annovar/AMOSTRA01.hg38_annovar.csv: Define o nome e a localização do arquivo CSV de saída onde os resultados serão armazenados. O arquivo será salvo como "AMOSTRA01.hg38_annovar.csv" no diretório "dados/annovar/".
-
-1>logs/log_VariantsToTable.txt 2>erro_VariantsToTable.txt: Redireciona a saída padrão (stdout) para o arquivo "log_VariantsToTable.txt" e a saída de erro (stderr) para o arquivo "erro_VariantsToTable.txt".
+Operações utilizadas:
+Operação|Descrição
+---|---
+-V dados/annovar/AMOSTRA01.hg38_multianno.vcf|Especifica o arquivo de entrada VCF que contém as variantes que você deseja converter em uma tabela CSV. O arquivo "AMOSTRA01.hg38_multianno.vcf" é usado como entrada.
+-F ...|Esta seção especifica os campos do arquivo VCF que você deseja incluir na tabela CSV resultante. Cada campo é especificado com a opção -F seguida pelo nome do campo.
+-GF ...|Essa seção especifica os campos genotípicos a serem incluídos na tabela CSV. Assim como os campos regulares, cada campo genotípico é especificado com a opção -GF seguida pelo nome do campo.
+-O dados/annovar/AMOSTRA01.hg38_annovar.csv|Define o nome e a localização do arquivo CSV de saída onde os resultados serão armazenados. O arquivo será salvo como "AMOSTRA01.hg38_annovar.csv" no diretório "dados/annovar/".
+1>logs/log_VariantsToTable.txt 2>erro_VariantsToTable.txt|Redireciona a saída padrão (stdout) para o arquivo "log_VariantsToTable.txt" e a saída de erro (stderr) para o arquivo "erro_VariantsToTable.txt".
 
 
 ## 5.3 - Importar o arquivo do annovar. Delimitado por TAB para o dataframe do python
