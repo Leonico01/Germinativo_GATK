@@ -430,11 +430,11 @@ annovar/humandb/|Especifica o diretório que contém os bancos de dados e recurs
 Protocol:
 Operação|Descrição
 ---|---
-- refGene|Anotação de genes de referência.
-- avsnp147|Anotação de variantes comuns da base de dados dbSNP.
-- exac03|Anotação de frequência de alelos da ExAC (Exome Aggregation Consortium).
-- clinvar_20210123|Anotação de variantes do banco de dados ClinVar.
-- dbnsfp30a|Anotação de efeitos preditos das variantes usando o banco de dados dbNSFP.
+-refGene|Anotação de genes de referência.
+-avsnp147|Anotação de variantes comuns da base de dados dbSNP.
+-exac03|Anotação de frequência de alelos da ExAC (Exome Aggregation Consortium).
+-clinvar_20210123|Anotação de variantes do banco de dados ClinVar.
+-dbnsfp30a|Anotação de efeitos preditos das variantes usando o banco de dados dbNSFP.
 
 Operation:
 Operação|Descrição
