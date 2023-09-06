@@ -219,11 +219,14 @@ Biblioteca=TruSightOne: Isso define uma variável chamada Biblioteca com o valor
 Plataforma=Illumina: Isso define uma variável chamada Plataforma com o valor "Illumina". Essa variável representa a plataforma de sequenciamento usada para gerar os dados.
 
 >Quinta linha
-    
-time|O comando time é usado para medir o tempo de execução do comando que segue. Ele será usado para medir quanto tempo leva para executar o comando bwa mem.
+
+time: O comando time é usado para medir o tempo de execução do comando que segue. Ele será usado para medir quanto tempo leva para executar o comando bwa mem.
 
 bwa mem -M -R ...: Este é o comando principal. Ele chama o programa bwa mem para realizar o alinhamento de sequência. Segue explicação das operações:
 
+Operações utilizadas:
+Operação|Descrição
+---|---
 -M|Esta opção é usada para marcar fragmentos de leitura como secundários para permitir um melhor processamento posterior, como o ordenamento com ferramentas como o Picard Tools.
 
 -R|"@RG\tID:CAP\tSM:$NOME\tLB:$Biblioteca\tPL:$Plataforma": Esta opção define um cabeçalho RG (Read Group) que será incluído no arquivo de saída SAM. Ele fornece informações sobre a amostra, biblioteca e plataforma usadas. As variáveis $NOME, $Biblioteca e $Plataforma são substituídas pelos valores definidos anteriormente.
